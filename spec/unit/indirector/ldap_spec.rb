@@ -13,33 +13,12 @@ describe Puppet::Indirector::Ldap do
     end
 
     @connection = mock 'ldap'
-  end
 
-  describe "when instantiating ldap" do
-    it "should be deprecated" do
-      Puppet.expects(:deprecation_warning).with("Puppet::Indirector::Ldap is deprecated and will be removed in a future release of Puppet.")
-
-      @ldap_class.new
-    end
-
-    it "should not emit a deprecation warning when they are disabled" do
-      Puppet.expects(:warning).with(regexp_matches(/Puppet::Indirector::Ldap is deprecated/)).never
-      Puppet[:disable_warnings] = ['deprecations']
-
-      @ldap_class.new
-    end
-
-    it "should only emit the deprecation warning once" do
-      Puppet.expects(:warning).with(regexp_matches(/Puppet::Indirector::Ldap is deprecated/)).once
-
-      @ldap_class.new
-      @ldap_class.new
-    end
+    @searcher = @ldap_class.new
   end
 
   describe "when searching ldap" do
     before do
-      @searcher = @ldap_class.new
       # Stub everything, and we can selectively replace with an expect as
       # we need to for testing.
       @searcher.stubs(:connection).returns(@connection)
